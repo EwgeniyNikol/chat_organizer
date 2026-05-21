@@ -1,7 +1,11 @@
+# Chaos Organizer — Чат Бот Федя
+
 [![GitHub Actions](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml)
+
 ## Демо
 
-Бекенд: [chaos-organizer-backend.onrender.com](https://chaos-organizer-backend.onrender.com)
+- **GitHub Pages:** https://ewgeniynikol.github.io/chat_organizer/
+- **Бекенд:** https://chat-organizer-fedy.onrender.com
 
 ## Функции
 
@@ -26,6 +30,8 @@
 - Шифрование сообщений (`@encrypt`)
 - Архивирование файлов в ZIP
 - Emoji-пикер
+- Оформление кода (```)
+- Стикеры
 
 ## Команды боту
 
@@ -42,7 +48,10 @@
 
 ## Установка
 
-```bash
+\`\`\`bash
 npm install
 npm run build
 npm start
+\`\`\`
+
+Открыть: `http://localhost:7070`
