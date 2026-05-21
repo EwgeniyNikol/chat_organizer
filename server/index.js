@@ -222,7 +222,13 @@ app.use(async (ctx) => {
     ctx.body = results;
     return;
   }
-
+  if (ctx.method === 'DELETE' && ctx.path === '/api/messages') {
+    messages.length = 0;
+    broadcast({ type: 'clear' });
+    ctx.body = { success: true };
+    return;
+  }
+  
   if (ctx.path === '/') {
     ctx.body = 'Chaos Organizer API';
   }
