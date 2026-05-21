@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node server/index.js",
-  "build": "webpack --mode production",
-  "lint": "eslint client/js/",
-  "postinstall": "npm run build"
+    "start": "node server/index.js",
+    "build": "webpack --mode production",
+    "lint": "eslint client/js/",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -22,12 +22,14 @@
   "homepage": "https://github.com/EwgeniyNikol/chat_organizer#readme",
   "dependencies": {
     "crypto-js": "^4.2.0",
+    "dotenv": "^17.4.2",
     "emoji-picker-element": "^1.29.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "koa": "^3.2.0",
     "koa-body": "^8.0.0",
     "koa-static": "^5.0.0",
+    "openai": "^6.38.0",
     "ws": "^8.20.1"
   },
   "devDependencies": {

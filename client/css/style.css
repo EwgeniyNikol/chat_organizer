@@ -4,15 +4,27 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #f0f2f5;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
   background: #075e54;
   color: white;
   padding: 6px 20px;
+  flex-shrink: 0;
 }
 
 .header h1 {
@@ -22,10 +34,12 @@ body {
 }
 
 .main {
+  flex: 1;
+  overflow: hidden;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px 20px 0 20px;
-  height: calc(100vh - 68px);
+  padding: 0 20px;
+  width: 100%;
 }
 
 .layout {
@@ -96,6 +110,14 @@ body {
   border-radius: 8px;
   max-width: 70%;
   word-wrap: break-word;
+  position: relative;
+  margin-left: auto;
+}
+
+.message:not(.mine) {
+  background: #fff;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .message img {
@@ -137,6 +159,12 @@ body {
   margin-right: 10px;
 }
 
+.sticker-btn {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
 .emoji-picker {
   position: absolute;
   bottom: 60px;
@@ -147,6 +175,40 @@ body {
 
 .emoji-picker.show {
   display: block;
+}
+
+.sticker-panel {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 220px;
+}
+
+.sticker-panel.show {
+  display: flex;
+}
+
+.sticker-item {
+  font-size: 36px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.sticker-item:hover {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.message .sticker-img {
+  font-size: 48px;
 }
 
 .message-input {
@@ -167,8 +229,36 @@ body {
   cursor: pointer;
 }
 
-.message {
-  position: relative;
+#geoBtn {
+  margin-left: 5px;
+  padding: 10px 12px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#recordBtn {
+  margin-left: 5px;
+  padding: 10px 12px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#recordBtn.recording {
+  background: #f00;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .message-sender {
@@ -223,6 +313,40 @@ body {
   color: #075e54;
 }
 
+.pin-btn {
+  position: absolute;
+  top: 5px;
+  right: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .pin-btn {
+  display: block;
+}
+
+.pin-btn:hover {
+  transform: scale(1.2);
+}
+
+.star-btn {
+  position: absolute;
+  top: 5px;
+  right: 68px;
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .star-btn {
+  display: block;
+}
+
+.star-btn.active {
+  display: block;
+}
+
 .search-area {
   position: relative;
   margin-top: 10px;
@@ -256,38 +380,6 @@ body {
   color: #333;
 }
 
-#recordBtn {
-  margin-left: 5px;
-  padding: 10px 12px;
-  background: #075e54;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-#recordBtn.recording {
-  background: #f00;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-#geoBtn {
-  margin-left: 5px;
-  padding: 10px 12px;
-  background: #075e54;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
 .pinned {
   background: #fff9c4;
   padding: 10px 15px;
@@ -298,23 +390,6 @@ body {
 
 .pinned .close-btn {
   display: block;
-}
-
-.pin-btn {
-  position: absolute;
-  top: 5px;
-  right: 50px;
-  cursor: pointer;
-  font-size: 14px;
-  display: none;
-}
-
-.message:hover .pin-btn {
-  display: block;
-}
-
-.pin-btn:hover {
-  transform: scale(1.2);
 }
 
 .fav-btn {
@@ -395,23 +470,6 @@ body {
   color: #f00;
 }
 
-.star-btn {
-  position: absolute;
-  top: 5px;
-  right: 68px;
-  cursor: pointer;
-  font-size: 14px;
-  display: none;
-}
-
-.message:hover .star-btn {
-  display: block;
-}
-
-.star-btn.active {
-  display: block;
-}
-
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -456,42 +514,56 @@ body {
   font-family: 'Courier New', monospace;
 }
 
-.sticker-btn {
-  font-size: 20px;
-  cursor: pointer;
-  margin-right: 8px;
-}
-
-.sticker-panel {
-  position: absolute;
-  bottom: 60px;
-  left: 20px;
-  z-index: 1000;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 8px;
-  display: none;
-  flex-wrap: wrap;
-  gap: 5px;
-  width: 220px;
-}
-
-.sticker-panel.show {
-  display: flex;
-}
-
-.sticker-item {
-  font-size: 36px;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.sticker-item:hover {
-  background: #f0f0f0;
-  border-radius: 4px;
-}
-
-.message .sticker-img {
-  font-size: 48px;
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+  }
+  
+  #app {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .main {
+    padding: 0 5px;
+    flex: 1;
+    overflow: visible;
+  }
+  
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .chat-container {
+    min-height: 70vh;
+  }
+  
+  .commands-panel {
+    width: 100%;
+    max-height: 200px;
+  }
+  
+  .header h1 {
+    font-size: 14px;
+  }
+  
+  .fav-btn {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .input-area {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  #geoBtn, #recordBtn {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
 }

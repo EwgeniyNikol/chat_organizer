@@ -100,6 +100,10 @@ class UI {
     const div = document.createElement('div');
     div.className = 'message';
     div.dataset.id = message.id;
+
+    if (message.sender !== 'Федя') {
+      div.classList.add('mine');
+    }
     
     const sender = document.createElement('div');
     sender.className = 'message-sender';

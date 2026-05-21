@@ -6,19 +6,26 @@ const http = require('http');
 const { WebSocketServer } = require('ws');
 const fs = require('fs');
 
+require('dotenv').config();
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
 const app = new Koa();
 const server = http.createServer(app.callback());
 const wss = new WebSocketServer({ server });
 
 const messages = [];
 const clients = new Set();
+const reminders = [];
 const uploadsDir = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
-
-console.log('Uploads dir:', uploadsDir);
 
 app.use(async (ctx, next) => {
   const start = Date.now();
@@ -27,9 +34,7 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
-app.use(koaBody({
-  multipart: true,
-}));
+app.use(koaBody({ multipart: true }));
 
 app.use(async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', '*');
@@ -46,7 +51,6 @@ app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/uploads/')) {
     const fileName = ctx.path.replace('/uploads/', '');
     const filePath = path.join(uploadsDir, fileName);
-    console.log('Serving file:', filePath, 'Exists:', fs.existsSync(filePath));
     if (fs.existsSync(filePath)) {
       ctx.type = path.extname(filePath);
       ctx.body = fs.createReadStream(filePath);
@@ -69,7 +73,7 @@ app.use(async (ctx) => {
     };
     messages.push(message);
     broadcast(message);
-    
+
     if (text && text.startsWith('@chaos:')) {
       const command = text.replace('@chaos:', '').trim().toLowerCase();
       const botResponse = getBotResponse(command);
@@ -81,9 +85,7 @@ app.use(async (ctx) => {
       };
       messages.push(botMessage);
       broadcast(botMessage);
-    }
-    
-    if (text && text.startsWith('@schedule:')) {
+    } else if (text && text.startsWith('@schedule:')) {
       const scheduleText = text.replace('@schedule:', '').trim();
       const match = scheduleText.match(/^(\d{2}:\d{2})\s+(\d{2}\.\d{2}\.\d{4})\s+«(.+)»$/);
       if (match) {
@@ -91,11 +93,9 @@ app.use(async (ctx) => {
         const [hours, minutes] = time.split(':').map(Number);
         const [day, month, year] = date.split('.').map(Number);
         const reminderDate = new Date(year, month - 1, day, hours, minutes);
-        
         if (reminderDate > new Date()) {
           const timeout = reminderDate.getTime() - Date.now();
           reminders.push({ text: reminderText, date: reminderDate });
-          
           setTimeout(() => {
             broadcast({
               id: Date.now(),
@@ -104,7 +104,6 @@ app.use(async (ctx) => {
               timestamp: new Date().toISOString()
             });
           }, timeout);
-          
           const confirmMessage = {
             id: Date.now() + 1,
             text: `Напоминание установлено на ${time} ${date}: «${reminderText}»`,
@@ -115,8 +114,26 @@ app.use(async (ctx) => {
           broadcast(confirmMessage);
         }
       }
+    } else if (text && !text.startsWith('@encrypt:') && !text.startsWith('sticker:')) {
+      try {
+        const completion = await openai.chat.completions.create({
+          model: 'deepseek/deepseek-v4-flash-20260423:free',
+          messages: [{ role: 'user', content: text }],
+        });
+        const aiResponse = completion.choices[0].message.content;
+        const botMessage = {
+          id: Date.now() + 1,
+          text: aiResponse,
+          sender: 'Федя',
+          timestamp: new Date().toISOString()
+        };
+        messages.push(botMessage);
+        broadcast(botMessage);
+      } catch (err) {
+        console.error('AI error:', err.message);
+      }
     }
-    
+
     ctx.body = message;
     return;
   }
@@ -128,14 +145,12 @@ app.use(async (ctx) => {
       ctx.body = { error: 'No file' };
       return;
     }
-    
     const ext = path.extname(file.originalFilename);
     const fileName = Date.now() + ext;
     const filePath = path.join(uploadsDir, fileName);
     const buffer = fs.readFileSync(file.filepath);
     fs.writeFileSync(filePath, buffer);
     fs.unlinkSync(file.filepath);
-    
     const message = {
       id: Date.now(),
       sender: 'user',
@@ -147,9 +162,7 @@ app.use(async (ctx) => {
       }
     };
     messages.push(message);
-    
     broadcast(message);
-    
     ctx.body = message;
     return;
   }
@@ -217,61 +230,33 @@ app.use(async (ctx) => {
 
 function getBotResponse(command) {
   const weather = ['Солнечно ☀️', 'Дождь 🌧️', 'Облачно ☁️', 'Снег ❄️', 'Ветрено 💨'];
-  const advices = [
-    'Сделай перерыв на 5 минут',
-    'Выпей воды',
-    'Проверь осанку',
-    'Улыбнись!',
-    'Позвони другу'
-  ];
+  const advices = ['Сделай перерыв на 5 минут', 'Выпей воды', 'Проверь осанку', 'Улыбнись!', 'Позвони другу'];
   const jokes = [
     'Почему программисты не любят природу? Слишком много багов',
     'Какой язык программирования у пиратов? R!',
-    'Почему Java-разработчики носят очки? Потому что не могут C#',
     '— Ты кто? — Я бот. — А почему не человек? — Баги не дают',
-    'Жизнь — это баг, а мы — патчи'
   ];
 
-  if (command.includes('погода')) {
-    return `Прогноз погоды: ${weather[Math.floor(Math.random() * weather.length)]}`;
-  }
-  if (command.includes('время')) {
-    return `Текущее время: ${new Date().toLocaleTimeString()}`;
-  }
-  if (command.includes('совет')) {
-    return advices[Math.floor(Math.random() * advices.length)];
-  }
-  if (command.includes('шутка')) {
-    return jokes[Math.floor(Math.random() * jokes.length)];
-  }
-  if (command.includes('монета')) {
-    return Math.random() > 0.5 ? 'Орёл 🪙' : 'Решка 🪙';
-  }
-  if (command.includes('help')) {
-    return 'Доступные команды:\n@chaos: погода — прогноз погоды\n@chaos: время — текущее время\n@chaos: совет — полезный совет\n@chaos: шутка — случайная шутка\n@chaos: монета — орёл или решка';
-  }
+  if (command.includes('погода')) return `Прогноз погоды: ${weather[Math.floor(Math.random() * weather.length)]}`;
+  if (command.includes('время')) return `Текущее время: ${new Date().toLocaleTimeString()}`;
+  if (command.includes('совет')) return advices[Math.floor(Math.random() * advices.length)];
+  if (command.includes('шутка')) return jokes[Math.floor(Math.random() * jokes.length)];
+  if (command.includes('монета')) return Math.random() > 0.5 ? 'Орёл 🪙' : 'Решка 🪙';
+  if (command.includes('help')) return 'Доступные команды:\n@chaos: погода — прогноз погоды\n@chaos: время — текущее время\n@chaos: совет — полезный совет\n@chaos: шутка — случайная шутка\n@chaos: монета — орёл или решка';
   return 'Неизвестная команда. Доступные: погода, время, совет, шутка, монета, help';
 }
 
 function broadcast(data) {
   const json = JSON.stringify(data);
   clients.forEach(client => {
-    if (client.readyState === 1) {
-      client.send(json);
-    }
+    if (client.readyState === 1) client.send(json);
   });
 }
 
 wss.on('connection', (ws) => {
   clients.add(ws);
-  
-  ws.on('close', () => {
-    clients.delete(ws);
-  });
+  ws.on('close', () => clients.delete(ws));
 });
 
 const PORT = process.env.PORT || 7070;
-
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

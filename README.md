@@ -1,4 +1,4 @@
-# Chaos Organizer — Чат Бот Федя
+# Chaos Organizer — Чат Бот Федя с ИИ
 
 [![GitHub Actions](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml)
 
@@ -17,6 +17,7 @@
 - Ленивая подгрузка (по 10 сообщений)
 
 ### Дополнительные
+- 🤖 **ИИ-помощник** (DeepSeek V4 Flash) — отвечает на любые вопросы
 - Синхронизация между вкладками
 - Поиск по сообщениям
 - Запись аудио
@@ -33,7 +34,7 @@
 - Оформление кода (```)
 - Стикеры
 
-## Команды боту
+## Команды
 
 | Команда | Описание |
 |---------|----------|
@@ -45,13 +46,11 @@
 | `@chaos: help` | Список команд |
 | `@schedule: ЧЧ:ММ ДД.ММ.ГГГГ «текст»` | Установить напоминание |
 | `@encrypt: текст` | Зашифровать сообщение |
+| Любой текст | Ответит ИИ (DeepSeek) |
 
 ## Установка
 
-\`\`\`bash
+```bash
 npm install
 npm run build
 npm start
-\`\`\`
-
-Открыть: `http://localhost:7070`
