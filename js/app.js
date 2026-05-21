@@ -7,9 +7,11 @@ import CryptoJS from 'crypto-js';
 
 class App {
   constructor() {
-    const wsUrl = 'wss://chat-organizer-fedy.onrender.com';
+    const isLocal = window.location.hostname === 'localhost';
+    const apiUrl = isLocal ? window.location.origin : 'https://chat-organizer-fedy.onrender.com';
+    const wsUrl = isLocal ? 'ws://localhost:7070' : 'wss://chat-organizer-fedy.onrender.com';
     
-    this.api = new API('https://chat-organizer-fedy.onrender.com');
+    this.api = new API(apiUrl);
     this.ws = new WebSocketClient(wsUrl);
     this.storage = new Storage();
     this.ui = new UI();
