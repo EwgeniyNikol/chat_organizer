@@ -20,6 +20,7 @@ class UI {
     this.importBtn = document.getElementById('importBtn');
     this.importFile = document.getElementById('importFile');
     this.zipBtn = document.getElementById('zipBtn');
+    this.clearBtn = document.getElementById('clearBtn');
   }
 
   renderMessage(message) {
@@ -43,6 +44,10 @@ class UI {
         this.messagesContainer.append(div);
       });
     }
+  }
+
+  clearMessages() {
+    this.messagesContainer.innerHTML = '';
   }
 
   showPinned(message) {

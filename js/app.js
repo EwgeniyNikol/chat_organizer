@@ -124,6 +124,12 @@ class App {
       this.downloadAllFiles();
     });
 
+    this.ui.clearBtn.addEventListener('click', () => {
+      if (confirm('Очистить всю историю?')) {
+        this.clearHistory();
+      }
+    });
+
     document.querySelectorAll('.commands-list code').forEach(code => {
       code.addEventListener('click', () => {
         this.ui.messageInput.value = code.textContent;
@@ -181,6 +187,12 @@ class App {
     const message = await this.api.sendMessage('sticker:' + sticker);
     this.ws.send(message);
     this.channel.postMessage(message);
+  }
+
+  async clearHistory() {
+    await fetch(`${this.api.baseUrl}/api/messages`, { method: 'DELETE' });
+    this.storage.messages = [];
+    this.ui.clearMessages();
   }
 
   encryptMessage(text, password) {
@@ -387,6 +399,11 @@ class App {
   }
 
   handleIncomingMessage(data) {
+    if (data.type === 'clear') {
+      this.storage.messages = [];
+      this.ui.clearMessages();
+      return;
+    }
     if (data.type === 'delete') {
       this.storage.removeMessage(data.id);
       this.ui.removeMessage(data.id);
