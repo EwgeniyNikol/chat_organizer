@@ -1,5 +1,4 @@
-
-[![Build status](https://ci.appveyor.com/api/projects/status/EwgeniyNikol/chat-organizer?svg=true)](https://ci.appveyor.com/project/EwgeniyNikol/chat-organizer)
+[![Deploy to GitHub Pages](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml)
 
 ## Демо
 
