@@ -1,0 +1,39 @@
+{
+  "name": "chat_organizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EwgeniyNikol/chat_organizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EwgeniyNikol/chat_organizer/issues"
+  },
+  "homepage": "https://github.com/EwgeniyNikol/chat_organizer#readme",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "emoji-picker-element": "^1.29.1",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "koa": "^3.2.0",
+    "koa-body": "^8.0.0",
+    "koa-static": "^5.0.0",
+    "ws": "^8.20.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
+    "babel-loader": "^10.1.1",
+    "eslint": "^10.4.0",
+    "webpack": "^5.107.0",
+    "webpack-cli": "^7.0.2"
+  }
+}
