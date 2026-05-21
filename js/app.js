@@ -481,8 +481,8 @@ class App {
       messageText = '🔒 ' + this.encryptMessage(rawText, password);
     }
 
-    const message = await this.api.sendMessage(messageText);
     this.ui.clearInput();
+    const message = await this.api.sendMessage(messageText);
     this.ws.send(message);
     this.channel.postMessage(message);
   }
