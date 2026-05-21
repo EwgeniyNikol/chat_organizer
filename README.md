@@ -1,5 +1,5 @@
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ВАШ_ID?svg=true)](https://ci.appveyor.com/project/EwgeniyNikol/chat-organizer)
+[![Build status](https://ci.appveyor.com/api/projects/status/EwgeniyNikol/chat-organizer?svg=true)](https://ci.appveyor.com/project/EwgeniyNikol/chat-organizer)
 
 ## Демо
 
