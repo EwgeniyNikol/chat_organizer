@@ -7,6 +7,7 @@ module.exports = [
     rules: {
       'no-unused-vars': 'warn',
       'no-undef': 'error',
+      'no-empty': 'warn',
     },
     languageOptions: {
       ecmaVersion: 'latest',
@@ -27,6 +28,7 @@ module.exports = [
         CryptoJS: 'readonly',
         alert: 'readonly',
         prompt: 'readonly',
+        confirm: 'readonly',
       },
     },
   },
