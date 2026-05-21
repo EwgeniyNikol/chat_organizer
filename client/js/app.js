@@ -8,9 +8,9 @@ import CryptoJS from 'crypto-js';
 class App {
   constructor() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}`;
+    const wsUrl = 'wss://chat-organizer-fedy.onrender.com';
     
-    this.api = new API(window.location.origin);
+    this.api = new API('https://chat-organizer-fedy.onrender.com');
     this.ws = new WebSocketClient(wsUrl);
     this.storage = new Storage();
     this.ui = new UI();
