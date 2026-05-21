@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "webpack --mode production",
-    "lint": "eslint client/js/"
+  "start": "node server/index.js",
+  "build": "webpack --mode production",
+  "lint": "eslint client/js/",
+  "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
