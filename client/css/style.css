@@ -442,3 +442,56 @@ body {
   background: #075e54;
 }
 
+.message pre {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 5px 0;
+  font-size: 13px;
+}
+
+.message code {
+  font-family: 'Courier New', monospace;
+}
+
+.sticker-btn {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.sticker-panel {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 220px;
+}
+
+.sticker-panel.show {
+  display: flex;
+}
+
+.sticker-item {
+  font-size: 36px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.sticker-item:hover {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.message .sticker-img {
+  font-size: 48px;
+}

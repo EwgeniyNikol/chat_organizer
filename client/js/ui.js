@@ -11,6 +11,7 @@ class UI {
     this.fileInput = document.getElementById('fileInput');
     this.uploadBtn = document.querySelector('.upload-btn');
     this.emojiBtn = document.querySelector('.emoji-btn');
+    this.stickerBtn = document.querySelector('.sticker-btn');
     this.favBtn = document.getElementById('favBtn');
     this.favModal = document.getElementById('favModal');
     this.favList = document.getElementById('favList');
@@ -158,6 +159,27 @@ class UI {
           }
         });
         div.append(decryptBtn);
+      } else if (message.text.startsWith('sticker:')) {
+        const sticker = document.createElement('span');
+        sticker.className = 'sticker-img';
+        sticker.textContent = message.text.replace('sticker:', '');
+        div.append(sticker);
+      } else if (message.text.includes('```')) {
+        const codeMatch = message.text.match(/```[\s\S]*?```/g);
+        if (codeMatch) {
+          let html = this.linkify(message.text);
+          codeMatch.forEach(block => {
+            const code = block.replace(/```/g, '');
+            html = html.replace(block, `<pre><code>${this.escapeHtml(code)}</code></pre>`);
+          });
+          const textSpan = document.createElement('span');
+          textSpan.innerHTML = html;
+          div.append(textSpan);
+        } else {
+          const textSpan = document.createElement('span');
+          textSpan.innerHTML = this.linkify(message.text);
+          div.append(textSpan);
+        }
       } else {
         const textSpan = document.createElement('span');
         textSpan.innerHTML = this.linkify(message.text);
@@ -212,6 +234,13 @@ class UI {
     }
     
     return div;
+  }
+
+  escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 
   linkify(text) {

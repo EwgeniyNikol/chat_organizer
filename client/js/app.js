@@ -141,10 +141,46 @@ class App {
     });
 
     this.setupEmojiPicker();
+    this.setupStickerPanel();
     this.setupDragAndDrop();
     this.setupLazyLoad();
 
     await this.loadMessages();
+  }
+
+  setupStickerPanel() {
+    const stickers = ['👍', '❤️', '😂', '😢', '😡', '🎉', '🔥', '💯', '👋', '🤖', '⭐', '🍕'];
+    
+    const panel = document.createElement('div');
+    panel.className = 'sticker-panel';
+    document.querySelector('.chat-container').append(panel);
+    
+    stickers.forEach(sticker => {
+      const item = document.createElement('span');
+      item.className = 'sticker-item';
+      item.textContent = sticker;
+      item.addEventListener('click', () => {
+        this.sendSticker(sticker);
+        panel.classList.remove('show');
+      });
+      panel.append(item);
+    });
+    
+    this.ui.stickerBtn.addEventListener('click', () => {
+      panel.classList.toggle('show');
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!panel.contains(e.target) && e.target !== this.ui.stickerBtn) {
+        panel.classList.remove('show');
+      }
+    });
+  }
+
+  async sendSticker(sticker) {
+    const message = await this.api.sendMessage('sticker:' + sticker);
+    this.ws.send(message);
+    this.channel.postMessage(message);
   }
 
   encryptMessage(text, password) {
