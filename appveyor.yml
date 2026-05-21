@@ -1,0 +1,20 @@
+image: Ubuntu
+
+stack: node 18
+
+branches:
+  only:
+    - main
+
+cache: node_modules
+
+install:
+  - npm install
+
+build: off
+
+build_script:
+  - npm run build
+
+test_script:
+  - npm run lint

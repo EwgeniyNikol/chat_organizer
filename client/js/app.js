@@ -7,7 +7,6 @@ import CryptoJS from 'crypto-js';
 
 class App {
   constructor() {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = 'wss://chat-organizer-fedy.onrender.com';
     
     this.api = new API('https://chat-organizer-fedy.onrender.com');
@@ -154,7 +153,7 @@ class App {
     try {
       const bytes = CryptoJS.AES.decrypt(encrypted, password);
       return bytes.toString(CryptoJS.enc.Utf8);
-    } catch (e) {
+    } catch (_e) {
       return null;
     }
   }
@@ -179,7 +178,7 @@ class App {
         this.ui.renderMessages(messages);
         this.offset = messages.length;
       }
-    } catch (err) {
+    } catch (_err) {
       alert('Ошибка импорта файла');
     }
   }
@@ -200,7 +199,9 @@ class App {
         const response = await fetch(msg.file.url);
         const blob = await response.blob();
         zip.file(msg.file.name, blob);
-      } catch (e) {}
+      } catch (_e) {
+        // файл недоступен
+      }
     }
     
     const content = await zip.generateAsync({ type: 'blob' });
@@ -290,7 +291,7 @@ class App {
 
       this.ws.send(saved);
       this.channel.postMessage(saved);
-    } catch (err) {
+    } catch (_err) {
       alert('Не удалось получить геолокацию');
     }
   }
@@ -320,7 +321,7 @@ class App {
 
       this.mediaRecorder.start();
       this.ui.recordBtn.classList.add('recording');
-    } catch (err) {
+    } catch (_err) {
       alert('Не удалось получить доступ к микрофону');
     }
   }

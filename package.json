@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "lint": "eslint client/js/"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.5",
+    "@eslint/js": "^10.0.1",
     "babel-loader": "^10.1.1",
     "eslint": "^10.4.0",
     "webpack": "^5.107.0",
