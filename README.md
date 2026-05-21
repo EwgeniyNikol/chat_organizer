@@ -1,5 +1,4 @@
-[![Deploy to GitHub Pages](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml)
-
+[![GitHub Actions](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/EwgeniyNikol/chat_organizer/actions/workflows/deploy.yml)
 ## Демо
 
 Бекенд: [chaos-organizer-backend.onrender.com](https://chaos-organizer-backend.onrender.com)
