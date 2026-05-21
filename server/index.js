@@ -18,6 +18,8 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
+console.log('Uploads dir:', uploadsDir);
+
 app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
@@ -42,7 +44,9 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/uploads/')) {
-    const filePath = path.join(uploadsDir, ctx.path.replace('/uploads/', ''));
+    const fileName = ctx.path.replace('/uploads/', '');
+    const filePath = path.join(uploadsDir, fileName);
+    console.log('Serving file:', filePath, 'Exists:', fs.existsSync(filePath));
     if (fs.existsSync(filePath)) {
       ctx.type = path.extname(filePath);
       ctx.body = fs.createReadStream(filePath);
