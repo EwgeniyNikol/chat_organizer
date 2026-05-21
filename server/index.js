@@ -12,7 +12,6 @@ const wss = new WebSocketServer({ server });
 
 const messages = [];
 const clients = new Set();
-const reminders = [];
 const uploadsDir = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadsDir)) {
@@ -29,6 +28,17 @@ app.use(async (ctx, next) => {
 app.use(koaBody({
   multipart: true,
 }));
+
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', '*');
+  ctx.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type');
+  if (ctx.method === 'OPTIONS') {
+    ctx.status = 204;
+    return;
+  }
+  await next();
+});
 
 app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/uploads/')) {
