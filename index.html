@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чат Бот</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+        <h1>Чат Бот - Федя</h1>
+        <button id="favBtn" class="fav-btn">⭐ Избранное</button>
+        <button id="exportBtn" class="fav-btn">📥 Экспорт</button>
+        <button id="importBtn" class="fav-btn">📤 Импорт</button>
+        <button id="zipBtn" class="fav-btn">📦 ZIP</button>
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+        <div class="search-area">
+            <input type="text" class="search-input" placeholder="Поиск...">
+            <span class="search-clear">✕</span>
+        </div>
+    </header>
+    <main class="main">
+      <div class="layout">
+        <div class="chat-container">
+          <div class="pinned" id="pinned" style="display: none;"></div>
+          <div class="messages" id="messages"></div>
+          <div class="input-area">
+            <label class="upload-btn" title="Загрузить файл">&#x1F4CE;</label>
+            <span class="emoji-btn">😊</span>
+            <input type="file" id="fileInput" multiple style="display: none">
+            <input type="text" class="message-input" placeholder="Введите сообщение...">
+            <button id="geoBtn" title="Отправить геолокацию">📍</button>
+            <button id="recordBtn" title="Записать аудио">🎤</button>
+            <button id="sendBtn">Отправить</button>
+          </div>
+        </div>
+        <div class="commands-panel">
+          <h3>🤖 Команды Феди</h3>
+          <ul class="commands-list">
+            <li><code>@chaos: погода</code> — прогноз погоды</li>
+            <li><code>@chaos: время</code> — текущее время</li>
+            <li><code>@chaos: совет</code> — полезный совет</li>
+            <li><code>@chaos: шутка</code> — случайная шутка</li>
+            <li><code>@chaos: монета</code> — орёл или решка</li>
+            <li><code>@chaos: help</code> — список команд</li>
+            <li><code>@schedule: ЧЧ:ММ ДД.ММ.ГГГГ «текст»</code> — напоминание</li>
+            <li><code>@encrypt: текст</code> — зашифровать сообщение</li>
+          </ul>
+          <h3 style="margin-top: 20px;">📂 Вложения</h3>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="image">🖼️</button>
+            <button class="filter-btn" data-filter="video">🎬</button>
+            <button class="filter-btn" data-filter="audio">🎵</button>
+            <button class="filter-btn" data-filter="file">📎</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="modal" id="favModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>⭐ Избранное</h3>
+        <span class="modal-close">✕</span>
+      </div>
+      <div class="modal-body" id="favList"></div>
+    </div>
+  </div>
+  <script type="module" src="dist/bundle.js"></script>
+</body>
+</html>

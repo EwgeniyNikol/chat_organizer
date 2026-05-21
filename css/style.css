@@ -1,0 +1,444 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+}
+
+.header {
+  background: #075e54;
+  color: white;
+  padding: 6px 20px;
+}
+
+.header h1 {
+  font-size: 18px;
+  display: inline;
+  margin-right: 10px;
+}
+
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 20px 0 20px;
+  height: calc(100vh - 68px);
+}
+
+.layout {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+}
+
+.chat-container {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.commands-panel {
+  width: 250px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.commands-panel h3 {
+  margin-bottom: 15px;
+  color: #075e54;
+}
+
+.commands-list {
+  list-style: none;
+}
+
+.commands-list li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.commands-list code {
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.commands-list code:hover {
+  background: #dcf8c6;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.messages.drag-over {
+  background: #e8f5e9;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #dcf8c6;
+  border-radius: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.message img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.message video {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.message audio {
+  width: 100%;
+}
+
+.message .file-link {
+  color: #075e54;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.upload-btn {
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.emoji-btn {
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.emoji-picker {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  z-index: 1000;
+  display: none;
+}
+
+.emoji-picker.show {
+  display: block;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+
+#sendBtn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.message {
+  position: relative;
+}
+
+.message-sender {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .close-btn {
+  display: block;
+}
+
+.close-btn:hover {
+  color: #f00;
+}
+
+.message a {
+  color: #075e54;
+  text-decoration: underline;
+}
+
+.message a:hover {
+  color: #043a33;
+}
+
+.download-btn {
+  position: absolute;
+  top: 5px;
+  right: 30px;
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .download-btn {
+  display: block;
+}
+
+.download-btn:hover {
+  color: #075e54;
+}
+
+.search-area {
+  position: relative;
+  margin-top: 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 30px 8px 12px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  display: none;
+}
+
+.search-input:not(:placeholder-shown) ~ .search-clear {
+  display: block;
+}
+
+.search-clear:hover {
+  color: #333;
+}
+
+#recordBtn {
+  margin-left: 5px;
+  padding: 10px 12px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#recordBtn.recording {
+  background: #f00;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+#geoBtn {
+  margin-left: 5px;
+  padding: 10px 12px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pinned {
+  background: #fff9c4;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ffc107;
+  font-size: 14px;
+  position: relative;
+}
+
+.pinned .close-btn {
+  display: block;
+}
+
+.pin-btn {
+  position: absolute;
+  top: 5px;
+  right: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .pin-btn {
+  display: block;
+}
+
+.pin-btn:hover {
+  transform: scale(1.2);
+}
+
+.fav-btn {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.fav-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 500px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-close {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-close:hover {
+  color: #f00;
+}
+
+.modal-body {
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.fav-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f9f9f9;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.fav-item .remove-fav {
+  cursor: pointer;
+  color: #999;
+}
+
+.fav-item .remove-fav:hover {
+  color: #f00;
+}
+
+.star-btn {
+  position: absolute;
+  top: 5px;
+  right: 68px;
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+.message:hover .star-btn {
+  display: block;
+}
+
+.star-btn.active {
+  display: block;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.filter-btn {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.filter-btn.active {
+  background: #075e54;
+  color: white;
+  border-color: #075e54;
+}
+
+.filter-btn:hover {
+  background: #e0e0e0;
+}
+
+.filter-btn.active:hover {
+  background: #075e54;
+}
+
