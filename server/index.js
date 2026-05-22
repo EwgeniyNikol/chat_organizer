@@ -117,13 +117,11 @@ app.use(async (ctx) => {
     } else if (text && !text.startsWith('@encrypt:') && !text.startsWith('sticker:')) {
       try {
         const completion = await openai.chat.completions.create({
-          model: 'google/gemma-4-31b:free',
+          model: 'qwen/qwen-3.6-plus-preview:free',
           extra_body: {
             models: [
-              'google/gemma-4-31b:free',
+              'qwen/qwen-3.6-plus-preview:free',
               'deepseek/deepseek-v4-flash:free',
-              'nvidia/nemotron-nano-9b-v2:free',
-              'mistralai/mistral-7b-instruct:free',
             ],
             route: 'fallback',
           },
