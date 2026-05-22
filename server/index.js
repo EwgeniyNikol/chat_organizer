@@ -117,7 +117,16 @@ app.use(async (ctx) => {
     } else if (text && !text.startsWith('@encrypt:') && !text.startsWith('sticker:')) {
       try {
         const completion = await openai.chat.completions.create({
-          model: 'deepseek/deepseek-v4-flash-20260423:free',
+          model: 'google/gemma-4-31b:free',
+          extra_body: {
+            models: [
+              'google/gemma-4-31b:free',
+              'deepseek/deepseek-v4-flash:free',
+              'nvidia/nemotron-nano-9b-v2:free',
+              'mistralai/mistral-7b-instruct:free',
+            ],
+            route: 'fallback',
+          },
           messages: [{ role: 'user', content: text }],
         });
         const aiResponse = completion.choices[0].message.content;
@@ -203,6 +212,13 @@ app.use(async (ctx) => {
     return;
   }
 
+  if (ctx.method === 'DELETE' && ctx.path === '/api/messages') {
+    messages.length = 0;
+    broadcast({ type: 'clear' });
+    ctx.body = { success: true };
+    return;
+  }
+
   if (ctx.method === 'GET' && ctx.path === '/api/messages') {
     const offset = parseInt(ctx.query.offset) || 0;
     const limit = parseInt(ctx.query.limit) || 10;
@@ -222,13 +238,7 @@ app.use(async (ctx) => {
     ctx.body = results;
     return;
   }
-  if (ctx.method === 'DELETE' && ctx.path === '/api/messages') {
-    messages.length = 0;
-    broadcast({ type: 'clear' });
-    ctx.body = { success: true };
-    return;
-  }
-  
+
   if (ctx.path === '/') {
     ctx.body = 'Chaos Organizer API';
   }
